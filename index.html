@@ -1,0 +1,354 @@
+&lt;!DOCTYPE html&gt;
+&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title>متابع الهدف&lt;/title&gt;
+    &lt;style&gt;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2e1a 0%, #0d1f0d 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #4ade80;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #86efac;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        .card {
+            background: #1a2d1a;
+            border: 1px solid #2d4a2d;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .progress-section {
+            text-align: center;
+        }
+        .target-label {
+            color: #86efac;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .target-amount {
+            font-size: 2rem;
+            color: #4ade80;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .progress-bar-container {
+            background: #0d1a0d;
+            border-radius: 10px;
+            height: 30px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border: 1px solid #2d4a2d;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #166534, #4ade80);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+        }
+        .progress-bar span {
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-shadow: 0 0 3px rgba(0,0,0,0.5);
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .stat-box {
+            background: #0d1f0d;
+            border: 1px solid #2d4a2d;
+            border-radius: 8px;
+            padding: 10px 15px;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        .stat-box .label {
+            font-size: 0.8rem;
+            color: #86efac;
+            margin-bottom: 5px;
+        }
+        .stat-box .value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4ade80;
+        }
+        .stat-box .value.remaining {
+            color: #facc15;
+        }
+        .payment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-group label {
+            color: #86efac;
+            font-size: 0.85rem;
+        }
+        .form-group input {
+            padding: 10px 12px;
+            border: 1px solid #2d4a2d;
+            border-radius: 8px;
+            background: #0d1a0d;
+            color: #e0e0e0;
+            font-size: 1rem;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #4ade80;
+        }
+        .btn-add {
+            background: linear-gradient(90deg, #166534, #15803d);
+            color: #fff;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .btn-add:hover {
+            background: linear-gradient(90deg, #15803d, #22c55e);
+        }
+        .btn-delete {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        .btn-delete:hover {
+            background: #991b1b;
+        }
+        h2 {
+            color: #4ade80;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+        .payment-list {
+            list-style: none;
+        }
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #0d1a0d;
+            border: 1px solid #2d4a2d;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .payment-info {
+            flex: 1;
+        }
+        .payment-project {
+            color: #86efac;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .payment-date {
+            color: #6b7280;
+            font-size: 0.75rem;
+        }
+        .payment-amount {
+            color: #4ade80;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 0 15px;
+        }
+        .empty-state {
+            text-align: center;
+            color: #6b7280;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 480px) {
+            .stats {
+                flex-direction: column;
+            }
+            .stat-box {
+                min-width: 100%;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            .target-amount {
+                font-size: 1.5rem;
+            }
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="container"&gt;
+        &lt;h1&gt;متابع الهدف المالي&lt;/h1&gt;
+        &lt;p class="subtitle"&gt;تتبع تقدمك نحو هدفك&lt;/p&gt;
+
+        &lt;div class="card progress-section"&gt;
+            &lt;p class="target-label"&gt;الهدف&lt;/p&gt;
+            &lt;p class="target-amount"&gt;9,000 يورو&lt;/p&gt;
+            &lt;div class="progress-bar-container"&gt;
+                &lt;div class="progress-bar" id="progressBar" style="width: 0%;"&gt;
+                    &lt;span id="progressText"&gt;0%&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class="stats"&gt;
+                &lt;div class="stat-box"&gt;
+                    &lt;p class="label"&gt;المبلغ المستلم&lt;/p&gt;
+                    &lt;p class="value" id="receivedAmount"&gt;0 يورو&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="stat-box"&gt;
+                    &lt;p class="label"&gt;المتبقي&lt;/p&gt;
+                    &lt;p class="value remaining" id="remainingAmount"&gt;9,000 يورو&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="card"&gt;
+            &lt;h2&gt;إضافة دفعة جديدة&lt;/h2&gt;
+            &lt;form class="payment-form" id="paymentForm"&gt;
+                &lt;div class="form-group"&gt;
+                    &lt;label for="amount"&gt;المبلغ (بال يورو)&lt;/label&gt;
+                    &lt;input type="number" id="amount" placeholder="أدخل المبلغ" min="0" step="0.01" required&gt;
+                &lt;/div&gt;
+                &lt;div class="form-group"&gt;
+                    &lt;label for="projectLabel"&gt;اسم المشروع&lt;/label&gt;
+                    &lt;input type="text" id="projectLabel" placeholder="مثال: مشروع التصميم" required&gt;
+                &lt;/div&gt;
+                &lt;button type="submit" class="btn-add"&gt;إضافة الدفعة&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;
+
+        &lt;div class="card"&gt;
+            &lt;h2&gt;سجل الدفعات&lt;/h2&gt;
+            &lt;ul class="payment-list" id="paymentList"&gt;
+            &lt;/ul&gt;
+            &lt;p class="empty-state" id="emptyState"&gt;لا توجد دفعات مسجلة بعد.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;script&gt;
+        const TARGET = 9000;
+        const STORAGE_KEY = 'goalProgressPayments';
+
+        function getPayments() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function savePayments(payments) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(payments));
+        }
+
+        function formatAmount(amount) {
+            return Number(amount).toLocaleString('ar-EG', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' يورو';
+        }
+
+        function updateUI() {
+            const payments = getPayments();
+            const totalReceived = payments.reduce((sum, p) => sum + p.amount, 0);
+            const remaining = Math.max(0, TARGET - totalReceived);
+            const percentage = Math.min(100, (totalReceived / TARGET) * 100);
+
+            document.getElementById('receivedAmount').textContent = formatAmount(totalReceived);
+            document.getElementById('remainingAmount').textContent = formatAmount(remaining);
+            
+            const bar = document.getElementById('progressBar');
+            bar.style.width = percentage + '%';
+            document.getElementById('progressText').textContent = percentage.toFixed(1) + '%';
+
+            const list = document.getElementById('paymentList');
+            const empty = document.getElementById('emptyState');
+            list.innerHTML = '';
+
+            if (payments.length === 0) {
+                empty.style.display = 'block';
+            } else {
+                empty.style.display = 'none';
+                payments.forEach((p, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'payment-item';
+                    li.innerHTML = `
+                        &lt;div class="payment-info"&gt;
+                            &lt;p class="payment-project"&gt;${p.project}&lt;/p&gt;
+                            &lt;p class="payment-date"&gt;${p.date}&lt;/p&gt;
+                        &lt;/div&gt;
+                        &lt;span class="payment-amount"&gt;+${formatAmount(p.amount)}&lt;/span&gt;
+                        &lt;button class="btn-delete" data-index="${index}"&gt;حذف&lt;/button&gt;
+                    `;
+                    list.appendChild(li);
+                });
+            }
+        }
+
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const amount = parseFloat(document.getElementById('amount').value);
+            const project = document.getElementById('projectLabel').value.trim();
+
+ if (!amount || amount &lt;= 0 || !project) return;
+
+            const payments = getPayments();
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' }) +
+                ' - ' + now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+            payments.push({ amount: amount, project: project, date: dateStr });
+            savePayments(payments);
+            updateUI();
+            this.reset();
+        });
+
+        document.getElementById('paymentList').addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-delete')) {
+                const index = parseInt(e.target.dataset.index);
+                const payments = getPayments();
+                payments.splice(index, 1);
+                savePayments(payments);
+                updateUI();
+            }
+        });
+
+        // Initialize
+        updateUI();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
